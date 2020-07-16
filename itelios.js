@@ -71,23 +71,28 @@ function createBreadCrumbs(nodes) {
             node = node.parent;
         }
 
-
-        if (breadCrumbs.length < 1) {
-            breadCrumbs.push(breadCrumbTxt);
-        }
-
-        for (const crumb of breadCrumbs) {
-            if (!crumb.includes(breadCrumbTxt) && !breadCrumbTxt.includes(crumb)) {
-                breadCrumbs.push(breadCrumbTxt);
-            } else if (breadCrumbTxt.includes(crumb) && breadCrumbTxt.length > crumb.length) {
-                var index = breadCrumbs.indexOf(crumb);
-                // Swap short path for long path
-                breadCrumbs[index] = breadCrumbTxt;
-            }
-        }
+        var breadCrumbs = addNewBreadCrumb(breadCrumbs, breadCrumbTxt);
     }
 
     return breadCrumbs.sort();
+}
+
+function addNewBreadCrumb(breadCrumbs, breadCrumbTxt) {
+    if (breadCrumbs.length < 1) {
+        breadCrumbs.push(breadCrumbTxt);
+    }
+
+    for (const crumb of breadCrumbs) {
+        if (!crumb.includes(breadCrumbTxt) && !breadCrumbTxt.includes(crumb)) {
+            breadCrumbs.push(breadCrumbTxt);
+        } else if (breadCrumbTxt.includes(crumb) && breadCrumbTxt.length > crumb.length) {
+            var index = breadCrumbs.indexOf(crumb);
+            // Swap short path for long path
+            breadCrumbs[index] = breadCrumbTxt;
+        }
+    }
+
+    return breadCrumbs;
 }
 
 function resetGlobal() {
