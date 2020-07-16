@@ -2,6 +2,7 @@ function getProductsAssignments() {
     return {
         B001: ['movies', 'fantasy'],
         D8: ['tolkien', 'root'],
+        C1: ['tolkien', 'fantasy'],
         RX20: []
     };
 }
@@ -62,7 +63,20 @@ function createBreadCrumbs(nodes) {
             node = node.parent;
         }
         
-        breadCrumbs.push(breadCrumbTxt);
+
+        if(breadCrumbs.length < 1) {
+            breadCrumbs.push(breadCrumbTxt);
+        }
+
+        for (const crumb of breadCrumbs) {
+            if(!crumb.includes(breadCrumbTxt) && !breadCrumbTxt.includes(crumb)) {
+                breadCrumbs.push(breadCrumbTxt);
+            } else if (breadCrumbTxt.includes(crumb) && breadCrumbTxt.length > crumb.length) {
+                var index = breadCrumbs.indexOf(crumb);
+                // Swap short path for long path
+                breadCrumbs[index] = breadCrumbTxt;           
+            }
+        }
     }
     
     return breadCrumbs.sort();
