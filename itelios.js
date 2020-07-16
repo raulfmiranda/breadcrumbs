@@ -26,12 +26,16 @@ function getCategories() {
 }
 
 function getPaths(productID) {
+
     var root = getCategories();
     var assignments = getProductsAssignments();
     assignedCategories = assignments[productID];
+    var breadCrumbs = [];
 
-    treeSearch(root);
-    var breadCrumbs = createBreadCrumbs(pathNodes);
+    if (assignedCategories) {
+        treeSearch(root);
+        breadCrumbs = createBreadCrumbs(pathNodes);
+    }
 
     return breadCrumbs.length > 0 ? breadCrumbs : ['EMPTY'];
 }
@@ -88,4 +92,16 @@ function createBreadCrumbs(nodes) {
     return breadCrumbs.sort();
 }
 
-var result = console.log(getPaths('D8'));
+function resetGlobal() {
+    assignedCategories = undefined;
+    pathNodes = [];
+}
+
+// Tests
+console.log('INPUT:          OUTPUT: ', JSON.stringify(getPaths())); resetGlobal();
+console.log('INPUT: XXXXXXXX OUTPUT: ', JSON.stringify(getPaths('XXXXXXXX'))); resetGlobal();
+console.log('INPUT: RX20     OUTPUT: ', JSON.stringify(getPaths('RX20'))); resetGlobal();
+console.log('INPUT: B001     OUTPUT: ', JSON.stringify(getPaths('B001'))); resetGlobal();
+console.log('INPUT: D8       OUTPUT: ', JSON.stringify(getPaths('D8'))); resetGlobal();
+console.log('INPUT: C1       OUTPUT: ', JSON.stringify(getPaths('C1'))); resetGlobal();
+console.log('INPUT: C2       OUTPUT: ', JSON.stringify(getPaths('C2')));
