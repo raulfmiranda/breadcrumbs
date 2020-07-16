@@ -1,8 +1,12 @@
+var assignedCategories = undefined;
+var pathNodes = [];
+
 function getProductsAssignments() {
     return {
         B001: ['movies', 'fantasy'],
         D8: ['tolkien', 'root'],
         C1: ['tolkien', 'fantasy'],
+        C2: ['root'],
         RX20: []
     };
 }
@@ -21,9 +25,6 @@ function getCategories() {
     return root;
 }
 
-var assignedCategories = undefined;
-var pathNodes = [];
-
 function getPaths(productID) {
     var root = getCategories();
     var assignments = getProductsAssignments();
@@ -36,17 +37,22 @@ function getPaths(productID) {
 }
 
 function treeSearch(tree) {
+
+    savePathNode(tree);    
+
     for (const branch of tree.children) {
-
-        var isBreadCrumb = assignedCategories.includes(branch.id);
-        
-        if(isBreadCrumb) {
-            pathNodes.push(branch);
-            var index = assignedCategories.indexOf(branch.id);
-            assignedCategories.splice(index, 1);
-        }
-
+        savePathNode(branch);
         treeSearch(branch);
+    }
+}
+
+function savePathNode(node) {
+    var isBreadCrumb = assignedCategories.includes(node.id);
+        
+    if(isBreadCrumb) {
+        pathNodes.push(node);
+        var index = assignedCategories.indexOf(node.id);
+        assignedCategories.splice(index, 1);
     }
 }
 
@@ -82,4 +88,4 @@ function createBreadCrumbs(nodes) {
     return breadCrumbs.sort();
 }
 
-var result = console.log(getPaths('B001'));
+var result = console.log(getPaths('D8'));
